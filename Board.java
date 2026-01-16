@@ -18,6 +18,7 @@ public class  Board
   public Board(){
     solvedPhrase = "";
     phrase = loadPhrase();
+    // removed temporary testing output
     currentLetterValue = 0;
   }
   //Set the attribute values to the default values.
@@ -77,53 +78,39 @@ public class  Board
       }
     } catch (Exception e) { System.out.println("Error reading or parsing phrases.txt"); }
     
-    // normalize to lower-case for simpler comparisons
-    tempPhrase = tempPhrase.toLowerCase();
-    phrase = tempPhrase;
-
     for (int i = 0; i < tempPhrase.length(); i++)
     {
       if (tempPhrase.substring(i, i + 1).equals(" "))
       {
         solvedPhrase += "  ";
-      }
+      }  
       else
       {
         solvedPhrase += "_ ";
       }
-    }
-
+    }  
+    
     return tempPhrase;
   }  
 
-  public int guessLetter(String guess)
+  public boolean guessLetter(String guess)
   {
-    int foundCount = 0;
+    boolean foundLetter = false;
     String newSolvedPhrase = "";
-
+    
     for (int i = 0; i < phrase.length(); i++)
     {
       if (phrase.substring(i, i + 1).equals(guess))
       {
         newSolvedPhrase += guess + " ";
-        foundCount++;
+        foundLetter = true;
       }
       else
       {
-        newSolvedPhrase += solvedPhrase.substring(i * 2, i * 2 + 1) + " ";
+        newSolvedPhrase += solvedPhrase.substring(i * 2, i * 2 + 1) + " ";  
       }
     }
     solvedPhrase = newSolvedPhrase;
-    return foundCount;
+    return foundLetter;
   } 
-
-  public boolean isFullySolved()
-  {
-    return !solvedPhrase.contains("_");
-  }
-
-  public String getPhrase()
-  {
-    return phrase;
-  }
 } 
