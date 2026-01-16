@@ -29,7 +29,6 @@ public class PhraseSolver
     Player currentPlayer = player1;
 
     while (!solved) {
-      // Set a new value for the current letter at the start of each turn
       board.setLetterValue();
       System.out.println("\nPhrase: " + board.getSolvedPhrase());
       System.out.println("Current Letter Value: " + board.getCurrentLetterValue());
@@ -69,7 +68,6 @@ public class PhraseSolver
         currentPlayer = player1;
       }
     }
-
 
     System.out.println("\nThe phrase is solved!");
     System.out.println("The final phrase is: " + board.getSolvedPhrase());
