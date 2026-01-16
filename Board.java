@@ -13,15 +13,13 @@ public class  Board
   private int currentLetterValue; 
 
   /* your code here - constructor(s) */ 
-
-  //Write a default constructor for the board class.
   public Board(){
     solvedPhrase = "";
     phrase = loadPhrase();
     // removed temporary testing output
     currentLetterValue = 0;
   }
-  //Set the attribute values to the default values.
+
   public String getSolvedPhrase() {
     return solvedPhrase;
   }
@@ -114,3 +112,4 @@ public class  Board
     return foundLetter;
   } 
 } 
+
