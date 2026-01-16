@@ -21,103 +21,67 @@ public class PhraseSolver
     solved = false;
   }
 
-
-
-  public void play()
-  {
-    boolean solved = false;
-    int currentPlayer = 1;
-
+  public void play() {
     Scanner input = new Scanner(System.in);
-    
-    boolean correct = true;
-    while (!solved) 
-    {
-      
-      /* your code here - game logic */
-      // show turn and board
-      Player active = (currentPlayer % 2 == 1) ? player1 : player2;
-      System.out.println("\n" + active.getPlayer() + "'s turn.");
-      System.out.println("Phrase: " + board.getSolvedPhrase());
 
-      // set value for this letter
+    System.out.println("\nLetter Guessing Game Started!");
+
+    Player currentPlayer = player1;
+
+    while (!solved) {
+      // Set a new value for the current letter at the start of each turn
       board.setLetterValue();
-      System.out.println("Current letter value: " + board.getCurrentLetterValue());
+      System.out.println("\nPhrase: " + board.getSolvedPhrase());
+      System.out.println("Current Letter Value: " + board.getCurrentLetterValue());
+      System.out.println("Player 1 (" + player1.getName() + "): " + player1.getPoints() + " points");
+      System.out.println("Player 2 (" + player2.getName() + "): " + player2.getPoints() + " points");
+      System.out.println(currentPlayer.getName() + ", it is your turn.");
 
-      // show scores
-      System.out.println(player1.getPlayer() + ": " + player1.getPoints() + "    " + player2.getPlayer() + ": " + player2.getPoints());
 
-      System.out.println("Type '1' to guess a letter, or '2' to try to solve the phrase:");
-      String choice = input.nextLine().trim();
-
-      if (choice.equals("1"))
-      {
-        System.out.println("Enter a single letter:");
-        String guess = input.nextLine().trim().toLowerCase();
-        if (guess.length() != 1 || !guess.matches("[a-z]"))
-        {
-          System.out.println("Invalid input. Please enter a single letter.");
-        }
-        else
-        {
-          int count = board.guessLetter(guess);
-          if (count > 0)
-          {
-            int award = count * board.getCurrentLetterValue();
-            active.setPoints(active.getPoints() + award);
-            System.out.println("Good guess! '" + guess + "' appears " + count + " time(s). " + active.getPlayer() + " earns " + award + " points.");
-          }
-          else
-          {
-            System.out.println("Sorry, '" + guess + "' is not in the phrase.");
-          }
+      String guess = "";
+      boolean validInput = false;
+      while (!validInput) {
+        System.out.print("Guess a letter (a-z or A-Z): ");
+        String ActualInput = input.nextLine();
+        if (ActualInput.length() == 1 && Character.isLetter(ActualInput.charAt(0))) {
+          guess = ActualInput.toLowerCase();
+          validInput = true;
+        } else {
+          System.out.println("Invalid input. Please enter exactly one letter.");
         }
       }
-      else if (choice.equals("2"))
-      {
-        System.out.println("Enter your solution attempt:");
-        String attempt = input.nextLine().trim().toLowerCase();
-        if (board.isSolved(attempt))
-        {
-          System.out.println("Correct! The phrase was: " + board.getPhrase());
+
+      if (board.guessLetter(guess)) {
+        System.out.println("Yes! The letter '" + guess + "' is in the phrase.");
+        int currentPoints = currentPlayer.getPoints();
+        currentPlayer.setPoints(currentPoints + board.getCurrentLetterValue());
+        if (!board.getSolvedPhrase().contains("_")) {
           solved = true;
         }
-        else
-        {
-          System.out.println("Incorrect solution attempt.");
-        }
-      }
-      else
-      {
-        System.out.println("Invalid choice. Turn skipped.");
+      } else {
+        System.out.println("Sorry, the letter '" + guess + "' is not in the phrase.");
       }
 
-      // check if all letters have been revealed
-      if (board.isFullySolved())
-      {
-        System.out.println("All letters revealed! The phrase is: " + board.getPhrase());
-        solved = true;
+
+      if (currentPlayer == player1) {
+        currentPlayer = player2;
+      } else {
+        currentPlayer = player1;
       }
-
-      // alternate player for next turn
-      if (!solved) currentPlayer++;
-    } 
-    
-    // game finished - determine winner
-    System.out.println("\nFinal scores: " + player1.getPlayer() + ": " + player1.getPoints() + "    " + player2.getPlayer() + ": " + player2.getPoints());
-    if (player1.getPoints() > player2.getPoints())
-    {
-      System.out.println(player1.getPlayer() + " wins!");
-    }
-    else if (player2.getPoints() > player1.getPoints())
-    {
-      System.out.println(player2.getPlayer() + " wins!");
-    }
-    else
-    {
-      System.out.println("It's a tie!");
     }
 
+
+    System.out.println("\nThe phrase is solved!");
+    System.out.println("The final phrase is: " + board.getSolvedPhrase());
+    System.out.println(player1.getName() + ": " + player1.getPoints() + " points");
+    System.out.println(player2.getName() + ": " + player2.getPoints() + " points");
+
+    if (player1.getPoints() > player2.getPoints()) {
+      System.out.println("The winner is: " + player1.getName() + "!");
+    } else if (player2.getPoints() > player1.getPoints()) {
+      System.out.println("The winner is: " + player2.getName() + "!");
+    } else {
+    System.out.println("Both players got the same amount of points. It's a tie!");
+    }
   }
-  
 }
